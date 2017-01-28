@@ -27,7 +27,7 @@ Usage
 <?php
 
 /**
- * @desc Your middleware can eitherbe an instance of Interop\Http\ServerMiddleware\MiddlewareInterface
+ * @desc Your middleware can either be an instance of Interop\Http\ServerMiddleware\MiddlewareInterface
  *      or a simple callable with similar signature.
  */
 $pipeline = new Vidyut\Pipeline();
