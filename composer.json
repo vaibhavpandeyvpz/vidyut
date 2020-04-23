@@ -13,7 +13,7 @@
       "Vidyut\\": "tests/"
     }
   },
-  "description": "No frills PSR-7 request handler / middleware based on PSR-15 specification.",
+  "description": "No frills PSR-7 request handler based on PSR-15 specification.",
   "homepage": "http://vaibhavpandeyvpz.github.io/vidyut",
   "keywords": ["psr-7", "psr-15", "http", "middleware"],
   "license": "MIT",

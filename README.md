@@ -1,5 +1,5 @@
 # vaibhavpandeyvpz/vidyut
-No frills [PSR-7](http://www.php-fig.org/psr/psr-7/) request handler / middleware based on [PSR-15](https://github.com/php-fig/fig-standards/blob/master/proposed/http-middleware/middleware.md) specification.
+No frills [PSR-7](http://www.php-fig.org/psr/psr-7/) request handler based on [PSR-15](https://github.com/php-fig/fig-standards/blob/master/proposed/http-middleware/middleware.md) specification.
 
 > Vidyut: `विद्युत्` (Electricity)
 
@@ -27,8 +27,7 @@ Usage
 <?php
 
 /**
- * @desc Your middleware can either be an instance of Interop\Http\ServerMiddleware\MiddlewareInterface
- *      or a simple callable with similar signature.
+ * @desc Middleware can be an instance of Psr\Http\Server\MiddlewareInterface or a callable with similar signature.
  */
 $pipeline = new Vidyut\Pipeline();
 
@@ -58,7 +57,7 @@ $pipeline->pipe(function () {
 
 $request = (new Sandesh\ServerRequestFactory())
     ->createServerRequest($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI'], $_SERVER);
-$response = $pipeline->process($request);
+$response = $pipeline->handle($request);
 ```
 
 License
