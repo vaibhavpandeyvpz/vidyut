@@ -11,20 +11,20 @@
 
 namespace Vidyut;
 
-use Interop\Http\ServerMiddleware\DelegateInterface;
-use Interop\Http\ServerMiddleware\MiddlewareInterface;
+use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Server\MiddlewareInterface;
 
 /**
  * Class Pipeline
  * @package Vidyut
  */
-class Pipeline implements DelegateInterface, PipelineInterface
+class Pipeline implements PipelineInterface
 {
     /**
      * @var array
      */
-    protected $middleware = array();
+    protected $middleware = [];
 
     /**
      * @var int
@@ -35,9 +35,9 @@ class Pipeline implements DelegateInterface, PipelineInterface
      * Pipeline constructor.
      * @param array $middleware
      */
-    public function __construct(array $middleware = array())
+    public function __construct(array $middleware = [])
     {
-        array_map(array($this, 'pipe'), $middleware);
+        array_walk($middleware, [$this, 'pipe']);
     }
 
     /**
@@ -52,7 +52,7 @@ class Pipeline implements DelegateInterface, PipelineInterface
     /**
      * {@inheritdoc}
      */
-    public function process(ServerRequestInterface $request)
+    public function handle(ServerRequestInterface $request): ResponseInterface
     {
         if (empty($this->middleware[$this->position])) {
             throw new \RuntimeException('Pipeline ended without returning any Psr\\Http\\Message\\ResponseInterface');
@@ -67,7 +67,7 @@ class Pipeline implements DelegateInterface, PipelineInterface
         }
         throw new \InvalidArgumentException(sprintf(
             "Middleware must either be an instance of '%s' or a valid callable; '%s' given",
-            'Interop\\Http\\ServerMiddleware\\MiddlewareInterface',
+            MiddlewareInterface::class,
             is_object($middleware) ? get_class($middleware) : gettype($middleware)
         ));
     }

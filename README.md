@@ -1,5 +1,5 @@
 # vaibhavpandeyvpz/vidyut
-No frills [PSR-7](http://www.php-fig.org/psr/psr-7/) middleware based on [PSR-15](https://github.com/php-fig/fig-standards/blob/master/proposed/http-middleware/middleware.md) draft.
+No frills [PSR-7](http://www.php-fig.org/psr/psr-7/) request handler / middleware based on [PSR-15](https://github.com/php-fig/fig-standards/blob/master/proposed/http-middleware/middleware.md) specification.
 
 > Vidyut: `विद्युत्` (Electricity)
 
@@ -34,7 +34,7 @@ $pipeline = new Vidyut\Pipeline();
 
 $pipeline->pipe(function ($request, $delegate) {
     if ($request->getUri()->getPath() === '/login') {
-        $response = new Sandesh\Response();
+        $response =  (new Sandesh\ResponseFactory())->createResponse();
         $response->getBody()->write('Login');
         return $response;
     }
@@ -43,7 +43,7 @@ $pipeline->pipe(function ($request, $delegate) {
 
 $pipeline->pipe(function ($request, $delegate) {
     if ($request->getUri()->getPath() === '/logout') {
-        $response = new Sandesh\Response();
+        $response =  (new Sandesh\ResponseFactory())->createResponse();
         $response->getBody()->write('Logout');
         return $response;
     }
@@ -51,12 +51,14 @@ $pipeline->pipe(function ($request, $delegate) {
 });
 
 $pipeline->pipe(function () {
-    $response = new Sandesh\Response();
-    $response->getBody()->write('Not Found');
+    $response =  (new Sandesh\ResponseFactory())->createResponse();
+    $response->getBody()->write('Page could not be found.');
     return $response->withStatus(404);
 });
 
-$response = $pipeline->process(new Sandesh\ServerRequest());
+$request = (new Sandesh\ServerRequestFactory())
+    ->createServerRequest($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI'], $_SERVER);
+$response = $pipeline->process($request);
 ```
 
 License
@@ -71,7 +73,7 @@ See [LICENSE.md][license-url] file.
 [latest-version-url]: https://github.com/vaibhavpandeyvpz/vidyut/releases
 [downloads-image]: https://img.shields.io/packagist/dt/vaibhavpandeyvpz/vidyut.svg?style=flat-square
 [downloads-url]: https://packagist.org/packages/vaibhavpandeyvpz/vidyut
-[php-version-image]: http://img.shields.io/badge/php-5.3+-8892be.svg?style=flat-square
+[php-version-image]: http://img.shields.io/badge/php-7.0+-8892be.svg?style=flat-square
 [php-version-url]: https://packagist.org/packages/vaibhavpandeyvpz/vidyut
 [license-image]: https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square
 [license-url]: LICENSE.md
