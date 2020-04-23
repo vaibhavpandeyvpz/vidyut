@@ -43,15 +43,6 @@ class Pipeline implements PipelineInterface
     /**
      * {@inheritdoc}
      */
-    public function pipe($middleware)
-    {
-        $this->middleware[] = $middleware;
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         if (empty($this->middleware[$this->position])) {
@@ -70,5 +61,14 @@ class Pipeline implements PipelineInterface
             MiddlewareInterface::class,
             is_object($middleware) ? get_class($middleware) : gettype($middleware)
         ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function pipe($middleware)
+    {
+        $this->middleware[] = $middleware;
+        return $this;
     }
 }
